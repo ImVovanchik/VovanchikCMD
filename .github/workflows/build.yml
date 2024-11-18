@@ -1,0 +1,41 @@
+name: Сборка и тест vovanchikcmd.exe
+
+on:
+  push:
+    branches:
+      - main  # Или другая ветка, на которой вы хотите запускать GitHub Actions
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest  # Используем виртуальную машину с Windows
+
+    steps:
+    # 1. Получаем исходный код репозитория
+    - name: Клонирование репозитория
+      uses: actions/checkout@v3
+
+    # 2. Установка MinGW (или другого компилятора C)
+    - name: Установка MinGW
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64  # Устанавливаем среду для компиляции 64-битных программ
+
+    # 3. Компиляция cmd.c в vovanchikcmd.exe
+    - name: Компиляция cmd.c в vovanchikcmd.exe
+      run: |
+        gcc cmd.c -o vovanchikcmd.exe  # Компилируем исходник в исполнимый файл vovanchikcmd.exe
+
+    # 4. Запуск vovanchikcmd.exe и проверка выхода через 3 секунды
+    - name: Запуск vovanchikcmd.exe
+      run: |
+        start /wait vovanchikcmd.exe  # Запускаем скомпилированный файл и ждем его завершения
+        timeout /t 3  # Пауза на 3 секунды
+        exit_code=%ERRORLEVEL%  # Сохраняем код завершения программы
+        if %exit_code% neq 0 (  # Если код завершения не равен 0, значит была ошибка
+          echo "vovanchikcmd.exe завершился с кодом ошибки %exit_code%"
+          exit %exit_code%  # Завершаем процесс с этим кодом ошибки
+        )
+        echo "vovanchikcmd.exe завершился успешно с кодом 0"
