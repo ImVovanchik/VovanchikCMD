@@ -26,20 +26,19 @@ jobs:
     # 3. Компиляция cmd.c в vovanchikcmd.exe
     - name: Компиляция cmd.c в vovanchikcmd.exe
       run: |
-        gcc cmd.c -o vovanchikcmd.exe  # Компилируем исходник в исполнимый файл vovanchikcmd.exe
+        gcc cmd.c -o vovanchikcmd.exe
 
-    # 4. Запуск vovanchikcmd.exe и отправка команды "exit"
+    # 4. Запуск vovanchikcmd.exe и отправка команды exit
     - name: Запуск vovanchikcmd.exe и отправка команды exit
       shell: cmd
       run: |
-        # Запускаем программу и отправляем команду exit через 3 секунды
         start /wait vovanchikcmd.exe
-        timeout /t 3  # Ожидаем 3 секунды, чтобы программа успела запуститься
-        echo exit | vovanchikcmd.exe  # Отправляем команду exit для завершения программы
-        timeout /t 1  # Даем еще немного времени на завершение программы
-        exit_code=%ERRORLEVEL%  # Сохраняем код завершения
+        timeout /t 3
+        echo exit | vovanchikcmd.exe
+        timeout /t 1
+        exit_code=%ERRORLEVEL%
         if %exit_code% neq 0 (
-          echo "Ошибка при выполнении vovanchikcmd.exe, код ошибки: %exit_code%"
-          exit %exit_code%  # Если ошибка, завершить с этим кодом
+          echo Ошибка при выполнении vovanchikcmd.exe, код ошибки: %exit_code%
+          exit %exit_code%
         )
-        echo "vovanchikcmd.exe завершился успешно с кодом 0"
+        echo vovanchikcmd.exe завершился успешно с кодом 0
