@@ -30,6 +30,7 @@ jobs:
 
     # 4. Запуск vovanchikcmd.exe и проверка выхода через 3 секунды
     - name: Запуск vovanchikcmd.exe
+      shell: cmd
       run: |
         start /wait vovanchikcmd.exe  # Запускаем скомпилированный файл и ждем его завершения
         timeout /t 3  # Пауза на 3 секунды
