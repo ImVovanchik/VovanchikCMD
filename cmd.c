@@ -111,9 +111,9 @@ void run_external_command(char *command) {
         }
     }
     if (optionCount > 0) {
-        snprintf(cmd, sizeof(cmd), "%s %s", command, optionString);
+        snprintf(cmd, sizeof(cmd), "powershell -Command \"%s %s\"", command, optionString);
     } else {
-        snprintf(cmd, sizeof(cmd), "%s", command);
+        snprintf(cmd, sizeof(cmd), "powershell -Command \"%s\"", command);
     }
 
     // Выполняем команду через cmd.exe
